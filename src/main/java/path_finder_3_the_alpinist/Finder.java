@@ -1,6 +1,7 @@
 package path_finder_3_the_alpinist;
 
-import java.util.LinkedList;
+import java.util.Comparator;
+import java.util.PriorityQueue;
 import java.util.Queue;
 
 /**
@@ -53,13 +54,16 @@ public class Finder {
                 matrix[i][j] = cell;
             }
         }
-        queue = new LinkedList<>();
+        queue = new PriorityQueue<>(Comparator.comparingInt(a -> a.cost));
         queue.offer(new Task(maxIndex, maxIndex, 0));
         do {
             Task task = queue.poll();
             assert task != null;
             if (task.cost < matrix[task.y][task.x].cost) {
                 matrix[task.y][task.x].cost = task.cost;
+                if (task.y == 0 && task.x == 0) {
+                    break;
+                }
                 if (task.y < maxIndex) {
                     checkAndPushTask(task.cost, matrix[task.y][task.x].height, task.y + 1, task.x);
                 }
